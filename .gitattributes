@@ -1,0 +1,8 @@
+# Windows batch files MUST use CRLF, otherwise cmd.exe can mis-parse labels
+# and split commands (errors like "'END' is not recognized").
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+
+# Shell scripts MUST use LF, otherwise bash fails with "\r: command not found".
+*.sh      text eol=lf
+*.command text eol=lf

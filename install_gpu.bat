@@ -1,5 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
+cd /d "%~dp0"
+
+REM Use the project virtual environment when it exists (run.bat creates it),
+REM so packages land where app.py actually runs.
+set "PY=python"
+if exist ".venv\Scripts\python.exe" set "PY=.venv\Scripts\python.exe"
 
 echo ============================================================
 echo  AutoCutAI - GPU Setup Assistant
@@ -18,7 +24,7 @@ REM ----------------------------------------------------------------
 REM 1. Check Python
 REM ----------------------------------------------------------------
 echo [1/4] Checking Python...
-where python >nul 2>nul
+%PY% --version >nul 2>nul
 if errorlevel 1 (
     echo   [FAIL] Python was not found on PATH.
     echo          Install Python 3.11 or newer from https://www.python.org/downloads/
@@ -26,7 +32,7 @@ if errorlevel 1 (
     set "ALL_OK=0"
     goto :end
 ) else (
-    for /f "tokens=2" %%v in ('python --version 2^>^&1') do set "PYVER=%%v"
+    for /f "tokens=2" %%v in ('%PY% --version 2^>^&1') do set "PYVER=%%v"
     echo   [OK] Found Python !PYVER!
 )
 
@@ -71,7 +77,7 @@ REM 4. Install Python packages
 REM ----------------------------------------------------------------
 echo.
 echo [4/4] Installing required Python packages...
-python -m pip install --upgrade pip
+%PY% -m pip install --upgrade pip
 if errorlevel 1 (
     echo   [FAIL] Could not upgrade pip. Check your internet connection and
     echo          Python installation, then re-run this script.
@@ -79,7 +85,7 @@ if errorlevel 1 (
     goto :end
 )
 
-python -m pip install -r requirements.txt
+%PY% -m pip install -r requirements.txt
 if errorlevel 1 (
     echo   [FAIL] Package installation failed. Scroll up for the exact error.
     echo          Common fixes: run this script as Administrator, or check
@@ -92,7 +98,7 @@ echo   [OK] Python packages installed.
 if "!HAS_GPU!"=="1" (
     echo.
     echo Installing GPU-enabled CTranslate2/faster-whisper dependencies...
-    python -m pip install --upgrade ctranslate2 faster-whisper
+    %PY% -m pip install --upgrade ctranslate2 faster-whisper
     if errorlevel 1 (
         echo   [WARN] Could not reinstall ctranslate2/faster-whisper for GPU.
         echo          AutoCutAI will still work fine on CPU.
@@ -105,7 +111,7 @@ if "!HAS_GPU!"=="1" (
 echo.
 echo ============================================================
 if "!ALL_OK!"=="1" (
-    echo  Setup finished. Run AutoCutAI with:  python app.py
+    echo  Setup finished. Run AutoCutAI with:  run.bat
     echo  Open the "Diagnostics" page inside AutoCutAI to confirm
     echo  exactly what mode (GPU or CPU^) Whisper will use.
 ) else (

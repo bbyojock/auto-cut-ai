@@ -1,55 +1,108 @@
 @echo off
-chcp 65001 >nul
-setlocal enabledelayedexpansion
-
-REM 이 스크립트가 있는 폴더로 이동 (어디서 더블클릭해도 항상 여기서 실행되게)
+REM ==========================================================
+REM  AutoCutAI launcher (Windows)
+REM  - ASCII only on purpose: cmd.exe mis-parses non-ASCII text
+REM    in .bat files depending on the console code page.
+REM  - Must be saved with CRLF line endings (see .gitattributes).
+REM ==========================================================
+setlocal
 cd /d "%~dp0"
+title AutoCutAI
 
 echo ============================================
-echo   AutoCutAI 실행 준비 중...
+echo   AutoCutAI - starting...
 echo ============================================
 echo.
 
-REM --- Python 설치 여부 확인 ---
-where python >nul 2>nul
-if errorlevel 1 (
-    echo [오류] Python이 설치되어 있지 않은 것 같습니다.
-    echo README.md의 "시작하기 전에 준비할 것" 항목을 참고해서
-    echo Python 3.11 이상을 먼저 설치해주세요.
-    echo ^(설치 시 "Add Python to PATH" 체크박스를 꼭 켜주세요^)
-    echo.
-    pause
-    exit /b 1
-)
+REM --- 1. Find a usable Python (3.11+) ---------------------
+set "BASE_PY="
 
-REM --- 가상환경이 없으면 처음 실행 -> 자동으로 만들고 설치 ---
-if not exist ".venv\Scripts\activate.bat" (
-    echo 처음 실행이시네요. 필요한 프로그램을 자동으로 설치할게요.
-    echo ^(인터넷 상황에 따라 몇 분 걸릴 수 있습니다^)
-    echo.
-    python -m venv .venv
-    if errorlevel 1 (
-        echo [오류] 가상환경 생성에 실패했습니다.
-        pause
-        exit /b 1
-    )
+py -3 -c "import sys; sys.exit(0 if sys.version_info[:2] >= (3, 11) else 1)" >nul 2>nul
+if not errorlevel 1 set "BASE_PY=py -3"
+if defined BASE_PY goto python_found
 
-    call .venv\Scripts\activate.bat
-    pip install -r requirements.txt
-    if errorlevel 1 (
-        echo [오류] 필요한 패키지 설치에 실패했습니다. 인터넷 연결을 확인해주세요.
-        pause
-        exit /b 1
-    )
-    echo.
-    echo 설치가 끝났습니다. 프로그램을 실행합니다...
-    echo.
-) else (
-    call .venv\Scripts\activate.bat
-)
+python -c "import sys; sys.exit(0 if sys.version_info[:2] >= (3, 11) else 1)" >nul 2>nul
+if not errorlevel 1 set "BASE_PY=python"
+if defined BASE_PY goto python_found
 
-python app.py
-
+echo [ERROR] Python 3.11 or newer was not found.
+echo         Install it from https://www.python.org/downloads/
+echo         and check "Add python.exe to PATH" in the installer.
+echo         If Python is already installed, turn off the Microsoft Store
+echo         "python.exe" alias: Settings - Apps - Advanced app settings -
+echo         App execution aliases.
 echo.
-echo 프로그램이 종료되었습니다.
 pause
+exit /b 1
+
+:python_found
+
+REM --- 2. Create the virtual environment if needed ---------
+REM We never "activate" it. We call .venv\Scripts\python.exe directly,
+REM so the global Python can never be used by accident.
+set "VENV_PY=.venv\Scripts\python.exe"
+
+if not exist "%VENV_PY%" goto create_venv
+"%VENV_PY%" -c "import sys" >nul 2>nul
+if not errorlevel 1 goto venv_ready
+
+echo The existing .venv is broken. Recreating it...
+rmdir /s /q ".venv"
+
+:create_venv
+echo First run: creating virtual environment (.venv)...
+%BASE_PY% -m venv .venv
+if errorlevel 1 goto venv_failed
+if not exist "%VENV_PY%" goto venv_failed
+echo.
+
+:venv_ready
+
+REM --- 3. Install packages if needed -----------------------
+REM A copy of requirements.txt is kept inside .venv after a successful
+REM install. If requirements.txt changes later, packages are reinstalled.
+set "STAMP=.venv\requirements.installed.txt"
+
+if not exist "%STAMP%" goto install_deps
+fc /b "requirements.txt" "%STAMP%" >nul 2>nul
+if errorlevel 1 goto install_deps
+goto run_app
+
+:install_deps
+echo Installing required packages. This can take a few minutes...
+echo.
+"%VENV_PY%" -m pip install -r requirements.txt
+if errorlevel 1 goto pip_failed
+copy /y "requirements.txt" "%STAMP%" >nul
+echo.
+echo Setup finished. Starting AutoCutAI...
+echo.
+
+REM --- 4. Run the app --------------------------------------
+:run_app
+"%VENV_PY%" app.py
+if errorlevel 1 goto app_failed
+exit /b 0
+
+:venv_failed
+echo [ERROR] Could not create the virtual environment.
+echo         Try deleting the .venv folder and run this file again.
+echo.
+pause
+exit /b 1
+
+:pip_failed
+echo.
+echo [ERROR] Package installation failed.
+echo         Check your internet connection and the messages above,
+echo         then run this file again.
+echo.
+pause
+exit /b 1
+
+:app_failed
+echo.
+echo [ERROR] AutoCutAI exited with an error. See the messages above.
+echo.
+pause
+exit /b 1
