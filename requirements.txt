@@ -1,6 +1,9 @@
 customtkinter>=5.2.2
 google-genai>=2.22.0
 requests>=2.31.0
+fastapi>=0.116.1
+uvicorn>=0.35.0
+python-multipart>=0.0.30
 
 # --- Version 2: video analysis pipeline ---
 opencv-python-headless>=4.9.0
