@@ -1,0 +1,7 @@
+customtkinter>=5.2.2
+google-genai>=2.22.0
+requests>=2.31.0
+
+# --- Version 2: video analysis pipeline ---
+opencv-python-headless>=4.9.0
+faster-whisper>=1.0.0

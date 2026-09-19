@@ -1,0 +1,28 @@
+# --- 실제 API 키가 저장되는 파일 (절대 커밋하면 안 됨) ---
+config/config.json
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+
+# --- 가상환경 ---
+.venv/
+venv/
+env/
+
+# --- 실행 중 생성되는 파일 ---
+logs/*.log
+*.log
+
+# --- OS/에디터 ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- 임시/캐시 산출물 ---
+*.tmp
+.pytest_cache/
