@@ -42,6 +42,9 @@
 - **DaVinci Resolve로 바로 가져가서 이어 작업** — 결과물을 파일로 내보내면, 무료
   버전의 DaVinci Resolve에서도 "Import" 한 번으로 실제 편집 타임라인을 열 수 있습니다.
   배속(빨리 감기) 처리한 구간도 실제로 빨라진 채로 반영됩니다.
+- **vNext 모바일 연동 백엔드(API) 추가** — 안드로이드 같은 모바일 클라이언트가 영상을
+  업로드하고, 서버에서 분석/편집안을 만든 뒤 진행 상태·결과(JSON/XML)를 내려받을 수 있는
+  API 서버를 함께 제공합니다.
 
 >  이 프로그램이 만드는 것은 "다 완성된 영상"이 아니라 **"이렇게 잘라서 편집하면
 > 어때요?"라는 초안(편집 계획)**입니다. 실제로 영상을 최종적으로 다듬고 완성하는
@@ -243,3 +246,26 @@ AI가 처음부터 완벽하게 맞출 순 없어서, "편집 지침"에 원하�
 
 프로젝트 구조, 버전별로 어떤 기능이 어떻게 구현됐는지 등 개발자를 위한 자세한 내용은
 [DEVELOPMENT.md](DEVELOPMENT.md) 문서에 정리되어 있습니다.
+
+---
+
+## vNext: 안드로이드/모바일용 API 서버 실행
+
+현재 앱 본체는 데스크톱(`customtkinter`) 기반이며, 모바일은 **별도 클라이언트 + 서버 API**
+구조로 지원합니다.
+
+1. 의존성 설치:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. API 서버 실행:
+   ```bash
+   python scripts/run_mobile_api.py --host 0.0.0.0 --port 8000
+   ```
+3. 주요 엔드포인트:
+   - `GET /api/vnext/health`
+   - `POST /api/vnext/jobs` (영상 업로드 + 작업 생성)
+   - `GET /api/vnext/jobs/{job_id}` (진행 상태)
+   - `GET /api/vnext/jobs/{job_id}/plan` (EditPlan JSON)
+   - `GET /api/vnext/jobs/{job_id}/resolve-xml` (Resolve Import용 XML)
+   - `GET /api/vnext/jobs/{job_id}/sync-bundle` (데스크톱/Resolve 이어작업용 번들)

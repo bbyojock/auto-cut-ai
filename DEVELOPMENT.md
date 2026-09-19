@@ -786,3 +786,30 @@ provider_factory.register("my_provider", lambda: MyProvider(...))
 ```
 
 기존 코드는 한 줄도 수정할 필요가 없습니다.
+
+## Version Next (vNext): Android/Mobile 지원 기반
+
+데스크톱 GUI를 모바일로 그대로 옮기지 않고, **서버 API + 모바일 클라이언트 분리 아키텍처**로
+확장했습니다.
+
+- 새 모듈 `services/mobile_api_service.py`:
+  - 업로드된 영상으로 비동기 작업을 생성/큐잉하고(`POST /api/vnext/jobs`), 상태를 조회합니다.
+  - 기존 `EditGenerationService`를 그대로 재사용해 분석/편집안 생성 로직을 유지합니다.
+  - 완료 시 EditPlan JSON과 Resolve XML을 함께 생성해 모바일/데스크톱 워크플로우를 맞춥니다.
+- 새 실행 스크립트 `scripts/run_mobile_api.py`:
+  - FastAPI + Uvicorn 서버를 바로 실행하는 엔트리포인트입니다.
+- 모바일/안드로이드 연동용 핵심 엔드포인트:
+  - `GET /api/vnext/health`
+  - `POST /api/vnext/jobs`
+  - `GET /api/vnext/jobs/{job_id}`
+  - `POST /api/vnext/jobs/{job_id}/cancel`
+  - `GET /api/vnext/jobs/{job_id}/plan`
+  - `GET /api/vnext/jobs/{job_id}/resolve-xml`
+  - `GET /api/vnext/jobs/{job_id}/sync-bundle`
+
+### 범위 및 역할 분리
+
+- 모바일 클라이언트(안드로이드)는 업로드/상태표시/결과조회 UI에 집중합니다.
+- 고비용 영상 분석(Whisper/프레임 추출/AI 편집 판단)은 서버에서 실행합니다.
+- 결과 포맷은 데스크톱과 호환(동일 EditPlan JSON + Resolve XML)되므로, 모바일에서 시작한
+  작업을 데스크톱/Resolve로 이어서 편집할 수 있습니다.
