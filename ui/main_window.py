@@ -12,6 +12,7 @@ from ui.pages.base_page import BasePage
 from ui.pages.chat_page import ChatPage
 from ui.pages.diagnostics_page import DiagnosticsPage
 from ui.pages.edit_plan_page import EditPlanPage
+from ui.pages.film_drama_page import FilmDramaPage
 from ui.pages.home_page import HomePage
 from ui.pages.logs_page import LogsPage
 from ui.pages.personal_profile_page import PersonalProfilePage
@@ -23,10 +24,13 @@ from utils.constants import (
     MIN_WINDOW_WIDTH,
     PAGE_CHAT,
     PAGE_DIAGNOSTICS,
+    EDITING_MODE_FILM_DRAMA,
+    EDITING_MODE_GENERAL,
     PAGE_EDIT_PLAN,
     PAGE_HOME,
     PAGE_LOGS,
     PAGE_PERSONAL_PROFILE,
+    PAGE_FILM_DRAMA,
     PAGE_SETTINGS,
 )
 
@@ -39,6 +43,7 @@ _PAGE_REGISTRY: Dict[str, Type[BasePage]] = {
     PAGE_CHAT: ChatPage,
     PAGE_EDIT_PLAN: EditPlanPage,
     PAGE_PERSONAL_PROFILE: PersonalProfilePage,
+    PAGE_FILM_DRAMA: FilmDramaPage,
     PAGE_SETTINGS: SettingsPage,
     PAGE_DIAGNOSTICS: DiagnosticsPage,
     PAGE_LOGS: LogsPage,
@@ -48,6 +53,7 @@ _NAV_ITEMS = [
     (PAGE_HOME, "Home"),
     (PAGE_CHAT, "AI Chat"),
     (PAGE_EDIT_PLAN, "AI Editor"),
+    (PAGE_FILM_DRAMA, "Film / Drama"),
     (PAGE_PERSONAL_PROFILE, "My Editing Style"),
     (PAGE_SETTINGS, "Settings"),
     (PAGE_DIAGNOSTICS, "Diagnostics"),
@@ -107,6 +113,10 @@ class MainWindow(ctk.CTk):
 
         self._sidebar.set_active(page_id)
         self._current_page_id = page_id
+        if page_id == PAGE_FILM_DRAMA:
+            self.context.config_manager.config.editing_mode = EDITING_MODE_FILM_DRAMA
+        elif page_id == PAGE_EDIT_PLAN:
+            self.context.config_manager.config.editing_mode = EDITING_MODE_GENERAL
         self.context.config_manager.config.last_used.page = page_id
         LoggingService.log_user_action(_LOGGER, "navigate", page=page_id)
 

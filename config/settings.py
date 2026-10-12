@@ -16,6 +16,8 @@ from utils.constants import (
     BUILTIN_PROVIDER_TYPES,
     DEFAULT_COLOR_THEME,
     DEFAULT_FRAME_INTERVAL_SECONDS,
+    DEFAULT_EDITING_MODE,
+    AVAILABLE_EDITING_MODES,
     DEFAULT_GEMINI_MODEL,
     GEMINI_REQUEST_TIMEOUT_SECONDS,
     DEFAULT_PROVIDER,
@@ -216,6 +218,9 @@ class AppConfig:
     frame_interval_seconds: float = DEFAULT_FRAME_INTERVAL_SECONDS
     prompt_style: str = DEFAULT_PROMPT_STYLE
     game_profile: str = "none"
+    # The active workflow family. Film/drama projects use a separate UI and
+    # will not alter the general automatic-editing pipeline.
+    editing_mode: str = DEFAULT_EDITING_MODE
 
     # ------------------------------------------------------------------
     # Provider helpers -- the UI and app.py go through these rather than
@@ -251,6 +256,7 @@ class AppConfig:
             "frame_interval_seconds": self.frame_interval_seconds,
             "prompt_style": self.prompt_style,
             "game_profile": self.game_profile,
+            "editing_mode": self.editing_mode,
         }
 
     @classmethod
@@ -286,4 +292,9 @@ class AppConfig:
             frame_interval_seconds=float(data.get("frame_interval_seconds", DEFAULT_FRAME_INTERVAL_SECONDS)),
             prompt_style=data.get("prompt_style", DEFAULT_PROMPT_STYLE),
             game_profile=data.get("game_profile", "none"),
+            editing_mode=(
+                data.get("editing_mode")
+                if data.get("editing_mode") in AVAILABLE_EDITING_MODES
+                else DEFAULT_EDITING_MODE
+            ),
         )

@@ -69,6 +69,13 @@ PAGE_SETTINGS = "settings"
 PAGE_DIAGNOSTICS = "diagnostics"
 PAGE_LOGS = "logs"
 PAGE_PERSONAL_PROFILE = "personal_profile"  # Version 4.5, Feature 15
+PAGE_FILM_DRAMA = "film_drama"
+
+# --- Editing modes ----------------------------------------------------------
+EDITING_MODE_GENERAL = "general"
+EDITING_MODE_FILM_DRAMA = "film_drama"
+AVAILABLE_EDITING_MODES = (EDITING_MODE_GENERAL, EDITING_MODE_FILM_DRAMA)
+DEFAULT_EDITING_MODE = EDITING_MODE_GENERAL
 
 # --- Video analysis pipeline (v2) -------------------------------------------
 SUPPORTED_VIDEO_EXTENSIONS = (".mp4", ".mov", ".mkv", ".avi")
