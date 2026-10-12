@@ -10,8 +10,8 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Install dependencies
@@ -20,7 +20,7 @@ jobs:
         shell: pwsh
         run: ./packaging/build_portable_windows.ps1
       - name: Upload portable folder
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Saeron_Portable_Windows
           path: portable/Saeron_Portable_Windows
