@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Dict, Type
 
 import customtkinter as ctk
@@ -20,6 +21,7 @@ from ui.pages.settings_page import SettingsPage
 from ui.widgets.sidebar import Sidebar
 from utils.constants import (
     APP_NAME,
+    APP_ICON_FILENAME,
     MIN_WINDOW_HEIGHT,
     MIN_WINDOW_WIDTH,
     PAGE_CHAT,
@@ -70,6 +72,9 @@ class MainWindow(ctk.CTk):
 
         config = context.config_manager.config
         self.title(APP_NAME)
+        icon_path = Path(__file__).resolve().parents[1] / "assets" / APP_ICON_FILENAME
+        if icon_path.is_file():
+            self.iconbitmap(default=str(icon_path))
         self.geometry(f"{config.window.width}x{config.window.height}")
         self.minsize(MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT)
 

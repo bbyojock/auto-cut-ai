@@ -1,4 +1,4 @@
-"""AutoCutAI application entry point (composition root).
+"""Saeron application entry point (composition root).
 
 This module is intentionally the *only* place that constructs concrete
 service/manager instances and wires them together. Every other module
