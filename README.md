@@ -103,21 +103,38 @@ scene_1_panel_1.png
 배속이 적용된 구간도 XML에 반영되어 Resolve에서 실제 재생 속도에 맞게
 가져올 수 있습니다.
 
-### Windows 포터블 앱
+### 포터블 앱 다운로드
 
-Windows용 포터블 배포본은 Python을 별도로 설치하지 않아도 실행할 수 있도록
-PyInstaller로 패키징합니다. `portable/Saeron_Portable_Windows` 폴더에 생성된
-`Saeron.exe` 또는 `Start Saeron.bat`를 실행하면 됩니다. 포터블 빌드에는
-오디오 추출에 필요한 FFmpeg도 포함됩니다.
+Saeron은 운영체제별 포터블 배포본을 제공합니다. 포터블 앱에는 실행에 필요한
+Python 런타임과 미디어 처리 구성 요소가 포함되어 있으므로 사용자가 Python을
+별도로 설치하지 않아도 됩니다.
 
-직접 빌드하려면 다음 명령을 사용합니다.
+아래 링크 주소를 각 배포 파일의 실제 다운로드 주소로 교체해서 사용하세요.
+GitHub Release, 클라우드 저장소 등 원하는 호스팅 서비스의 링크를 넣을 수
+있습니다.
+
+| 운영체제 | 다운로드 |
+|---|---|
+| Windows 64-bit | [Saeron Portable for Windows](WINDOWS_PORTABLE_DOWNLOAD_URL) |
+| macOS Apple Silicon | [Saeron Portable for macOS Apple Silicon](MACOS_ARM64_DOWNLOAD_URL) |
+| macOS Intel | [Saeron Portable for macOS Intel](MACOS_X64_DOWNLOAD_URL) |
+| Linux 64-bit | [Saeron Portable for Linux](LINUX_X64_DOWNLOAD_URL) |
+
+예를 들어 Windows 링크를 연결하려면 다음처럼 작성합니다.
+
+```markdown
+[Saeron Portable for Windows](https://example.com/Saeron_Portable_Windows.zip)
+```
+
+포터블 버전은 운영체제별로 따로 빌드해야 하며, 다른 운영체제용 실행 파일을
+그대로 사용할 수는 없습니다. Windows 포터블 빌드에는 오디오 추출에 필요한
+FFmpeg가 포함됩니다.
+
+개발자가 직접 Windows 포터블 빌드를 만들려면 다음 명령을 사용합니다.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File packaging\build_portable_windows.ps1
 ```
-
-GitHub Actions의 `Build Saeron portable Windows app` 워크플로를 수동 실행하거나
-`v*` 태그를 게시하면 같은 포터블 폴더를 다운로드할 수 있는 아티팩트가 생성됩니다.
 
 ### 모바일 연동 API
 
