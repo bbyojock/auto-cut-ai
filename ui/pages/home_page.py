@@ -12,7 +12,7 @@ class HomePage(BasePage):
     """Landing page showing a quick status overview."""
 
     def build(self) -> None:
-        self.grid_columnconfigure((0, 1, 2), weight=1)
+        self.grid_columnconfigure((0, 1, 2, 3), weight=1)
 
         header = ctk.CTkLabel(
             self,
@@ -27,14 +27,15 @@ class HomePage(BasePage):
             font=ctk.CTkFont(size=14),
             text_color="gray60",
         )
-        subtitle.grid(row=1, column=0, columnspan=3, padx=30, pady=(0, 24), sticky="w")
+        subtitle.grid(row=1, column=0, columnspan=4, padx=30, pady=(0, 24), sticky="w")
 
         self._provider_card = self._build_stat_card(row=2, column=0, title="AI Provider")
         self._keys_card = self._build_stat_card(row=2, column=1, title="Configured Keys")
         self._model_card = self._build_stat_card(row=2, column=2, title="Selected Model")
+        self._mode_card = self._build_stat_card(row=2, column=3, title="Editing Mode")
 
         roadmap_frame = ctk.CTkFrame(self)
-        roadmap_frame.grid(row=3, column=0, columnspan=3, padx=30, pady=(24, 30), sticky="nsew")
+        roadmap_frame.grid(row=3, column=0, columnspan=4, padx=30, pady=(24, 30), sticky="nsew")
         self.grid_rowconfigure(3, weight=1)
 
         roadmap_title = ctk.CTkLabel(
@@ -82,6 +83,8 @@ class HomePage(BasePage):
 
         self._provider_card.configure(text=chat_service.provider_name)
         self._model_card.configure(text=chat_service.model)
+        mode = self.context.config_manager.config.editing_mode
+        self._mode_card.configure(text="Film / Drama" if mode == "film_drama" else "General")
 
         total_keys = len(key_manager.keys)
         usable_keys = key_manager.usable_key_count()
