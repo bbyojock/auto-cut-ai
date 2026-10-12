@@ -8,13 +8,13 @@ set "PY=python"
 if exist ".venv\Scripts\python.exe" set "PY=.venv\Scripts\python.exe"
 
 echo ============================================================
-echo  AutoCutAI - GPU Setup Assistant
+echo  Saeron - GPU Setup Assistant
 echo ============================================================
 echo.
 echo This script checks your system, installs the required Python
 echo packages, and tells you exactly what to do next. It NEVER
 echo fails silently -- if something is missing, it explains why and
-echo what to do about it. GPU acceleration is OPTIONAL: AutoCutAI
+echo what to do about it. GPU acceleration is OPTIONAL: Saeron
 echo always works on CPU even if you skip this entirely.
 echo.
 
@@ -45,7 +45,7 @@ where nvidia-smi >nul 2>nul
 if errorlevel 1 (
     echo   [INFO] nvidia-smi was not found. Either you have no NVIDIA GPU,
     echo          or the driver is not installed yet.
-    echo          AutoCutAI will use CPU mode automatically -- this is fine.
+    echo          Saeron will use CPU mode automatically -- this is fine.
     echo          To use GPU mode later, install the latest NVIDIA driver from:
     echo          https://www.nvidia.com/Download/index.aspx
     set "HAS_GPU=0"
@@ -63,7 +63,7 @@ echo [3/4] Checking FFmpeg...
 where ffmpeg >nul 2>nul
 if errorlevel 1 (
     echo   [FAIL] ffmpeg was not found on PATH.
-    echo          AutoCutAI's Version 2 analysis pipeline needs it for audio
+    echo          Saeron's Version 2 analysis pipeline needs it for audio
     echo          extraction. Download a build from:
     echo          https://www.gyan.dev/ffmpeg/builds/
     echo          then add its "bin" folder to your PATH and re-run this script.
@@ -101,7 +101,7 @@ if "!HAS_GPU!"=="1" (
     %PY% -m pip install --upgrade ctranslate2 faster-whisper
     if errorlevel 1 (
         echo   [WARN] Could not reinstall ctranslate2/faster-whisper for GPU.
-        echo          AutoCutAI will still work fine on CPU.
+        echo          Saeron will still work fine on CPU.
     ) else (
         echo   [OK] Whisper GPU dependencies installed.
     )
@@ -111,12 +111,12 @@ if "!HAS_GPU!"=="1" (
 echo.
 echo ============================================================
 if "!ALL_OK!"=="1" (
-    echo  Setup finished. Run AutoCutAI with:  run.bat
-    echo  Open the "Diagnostics" page inside AutoCutAI to confirm
+    echo  Setup finished. Run Saeron with:  run.bat
+    echo  Open the "Diagnostics" page inside Saeron to confirm
     echo  exactly what mode (GPU or CPU^) Whisper will use.
 ) else (
     echo  Setup finished WITH WARNINGS. Read the messages above --
-    echo  AutoCutAI may still run in CPU mode even if some GPU-only
+    echo  Saeron may still run in CPU mode even if some GPU-only
     echo  steps failed. Nothing here was silently skipped.
 )
 echo ============================================================

@@ -103,6 +103,22 @@ scene_1_panel_1.png
 배속이 적용된 구간도 XML에 반영되어 Resolve에서 실제 재생 속도에 맞게
 가져올 수 있습니다.
 
+### Windows 포터블 앱
+
+Windows용 포터블 배포본은 Python을 별도로 설치하지 않아도 실행할 수 있도록
+PyInstaller로 패키징합니다. `portable/Saeron_Portable_Windows` 폴더에 생성된
+`Saeron.exe` 또는 `Start Saeron.bat`를 실행하면 됩니다. 포터블 빌드에는
+오디오 추출에 필요한 FFmpeg도 포함됩니다.
+
+직접 빌드하려면 다음 명령을 사용합니다.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File packaging\build_portable_windows.ps1
+```
+
+GitHub Actions의 `Build Saeron portable Windows app` 워크플로를 수동 실행하거나
+`v*` 태그를 게시하면 같은 포터블 폴더를 다운로드할 수 있는 아티팩트가 생성됩니다.
+
 ### 모바일 연동 API
 
 vNext에서는 Android와 같은 모바일 클라이언트에서 영상을 업로드하고

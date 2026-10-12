@@ -1,0 +1,26 @@
+name: Build Saeron portable Windows app
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt pyinstaller
+      - name: Build portable app
+        shell: pwsh
+        run: ./packaging/build_portable_windows.ps1
+      - name: Upload portable folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: Saeron_Portable_Windows
+          path: portable/Saeron_Portable_Windows

@@ -26,3 +26,9 @@ Thumbs.db
 # --- 임시/캐시 산출물 ---
 *.tmp
 .pytest_cache/
+
+# --- Windows portable build output -----------------------------------------
+/build/
+/dist/
+/portable/Saeron_Portable_Windows/*
+!/portable/Saeron_Portable_Windows/README.txt

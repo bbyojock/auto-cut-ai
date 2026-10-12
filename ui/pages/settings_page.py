@@ -367,11 +367,11 @@ class SettingsPage(BasePage):
         def on_create() -> None:
             provider_id = id_entry.get().strip().lower().replace(" ", "_")
             if not provider_id:
-                messagebox.showerror("AutoCutAI", "Provider ID is required.")
+                messagebox.showerror("Saeron", "Provider ID is required.")
                 return
             config = self.context.config_manager.config
             if config.get_provider(provider_id) is not None:
-                messagebox.showerror("AutoCutAI", f"A provider with id '{provider_id}' already exists.")
+                messagebox.showerror("Saeron", f"A provider with id '{provider_id}' already exists.")
                 return
 
             config.add_provider(
@@ -392,7 +392,7 @@ class SettingsPage(BasePage):
         ctk.CTkButton(dialog, text="Add Provider", command=on_create).pack(pady=20)
 
     def _delete_provider(self, provider_id: str) -> None:
-        if not messagebox.askyesno("AutoCutAI", f"Delete provider '{provider_id}'? This cannot be undone."):
+        if not messagebox.askyesno("Saeron", f"Delete provider '{provider_id}'? This cannot be undone."):
             return
         config = self.context.config_manager.config
         config.remove_provider(provider_id)
@@ -410,7 +410,7 @@ class SettingsPage(BasePage):
             widgets.migration_frame.destroy()
             widgets.migration_frame = None
         messagebox.showinfo(
-            "AutoCutAI", f"Model field updated to '{suggestion}'. Click 'Save Settings' to apply it."
+            "Saeron", f"Model field updated to '{suggestion}'. Click 'Save Settings' to apply it."
         )
 
     # ------------------------------------------------------------------
@@ -538,7 +538,7 @@ class SettingsPage(BasePage):
             try:
                 timeout_seconds = int(widgets.timeout_var.get().strip())
             except (TypeError, ValueError):
-                messagebox.showerror("AutoCutAI", f"'{settings.display_name}' timeout must be an integer.")
+                messagebox.showerror("Saeron", f"'{settings.display_name}' timeout must be an integer.")
                 return
             minimum_timeout = (
                 GEMINI_REQUEST_TIMEOUT_SECONDS
@@ -547,7 +547,7 @@ class SettingsPage(BasePage):
             )
             if not minimum_timeout <= timeout_seconds <= 3600:
                 messagebox.showerror(
-                    "AutoCutAI",
+                    "Saeron",
                     f"'{settings.display_name}' timeout must be between "
                     f"{minimum_timeout} and 3600 seconds.",
                 )
@@ -557,29 +557,29 @@ class SettingsPage(BasePage):
             try:
                 max_retries = int(widgets.max_retries_var.get().strip())
             except (TypeError, ValueError):
-                messagebox.showerror("AutoCutAI", f"'{settings.display_name}' max retries must be an integer.")
+                messagebox.showerror("Saeron", f"'{settings.display_name}' max retries must be an integer.")
                 return
             if not 1 <= max_retries <= 10:
-                messagebox.showerror("AutoCutAI", f"'{settings.display_name}' max retries must be between 1 and 10.")
+                messagebox.showerror("Saeron", f"'{settings.display_name}' max retries must be between 1 and 10.")
                 return
             settings.max_retries = max_retries
 
             if settings.provider_type == PROVIDER_TYPE_GEMINI:
                 settings.model = migrate_gemini_model(settings.provider_type, settings.model)
                 if settings.enabled and not settings.api_keys:
-                    messagebox.showerror("AutoCutAI", "Gemini requires at least one API key.")
+                    messagebox.showerror("Saeron", "Gemini requires at least one API key.")
                     return
                 if settings.base_url:
                     parsed = urlparse(settings.base_url)
                     if parsed.scheme not in ("http", "https") or not parsed.netloc:
                         messagebox.showerror(
-                            "AutoCutAI",
+                            "Saeron",
                             "Gemini Base URL must be empty (SDK default) or a valid http(s) URL.",
                         )
                         return
                 if suggest_model_migration(settings.provider_type, widgets.model_var.get().strip()):
                     messagebox.showwarning(
-                        "AutoCutAI",
+                        "Saeron",
                         f"Deprecated Gemini model replaced with '{settings.model}'.",
                     )
 
@@ -588,13 +588,13 @@ class SettingsPage(BasePage):
 
         if active_settings is None or not active_settings.enabled:
             messagebox.showerror(
-                "AutoCutAI",
+                "Saeron",
                 "Select an enabled provider as 'Active' before saving (or enable the "
                 "currently selected one).",
             )
             return
         if not active_settings.model:
-            messagebox.showerror("AutoCutAI", f"'{active_settings.display_name}' has no model configured.")
+            messagebox.showerror("Saeron", f"'{active_settings.display_name}' has no model configured.")
             return
 
         config.last_used.provider = new_active_id
@@ -608,7 +608,7 @@ class SettingsPage(BasePage):
             provider = self.context.provider_factory.create_from_settings(active_settings)
         except Exception as exc:  # noqa: BLE001 - surfaced to the user via dialog
             _LOGGER.error("Failed to activate provider '%s': %s", new_active_id, exc)
-            messagebox.showerror("AutoCutAI", f"Could not activate '{active_settings.display_name}':\n{exc}")
+            messagebox.showerror("Saeron", f"Could not activate '{active_settings.display_name}':\n{exc}")
             return
 
         self.context.chat_service.set_provider(provider)
@@ -629,9 +629,9 @@ class SettingsPage(BasePage):
             self.context.config_manager.save()
         except Exception as exc:  # noqa: BLE001 - surfaced to the user via dialog
             _LOGGER.error("Failed to save settings: %s", exc)
-            messagebox.showerror("AutoCutAI", f"Could not save settings:\n{exc}")
+            messagebox.showerror("Saeron", f"Could not save settings:\n{exc}")
             return
 
         LoggingService.log_user_action(_LOGGER, "save_settings", active_provider=new_active_id)
-        messagebox.showinfo("AutoCutAI", "Settings saved.")
+        messagebox.showinfo("Saeron", "Settings saved.")
         self._refresh_providers_section()

@@ -2,7 +2,7 @@
 
 Every module should obtain its logger via :meth:`LoggingService.get_logger`
 instead of calling ``logging.getLogger`` directly, so the naming stays
-consistent (``AutoCutAI.<module>``) and handlers are only configured once.
+consistent (``Saeron.<module>``) and handlers are only configured once.
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ class LoggingService:
 
     @classmethod
     def configure(cls, log_dir: Optional[Path] = None, level: int = logging.INFO) -> Path:
-        """Set up the root ``AutoCutAI`` logger. Safe to call multiple times."""
+        """Set up the root ``Saeron`` logger. Safe to call multiple times."""
         log_dir = log_dir or (get_project_root() / "logs")
         ensure_directory(log_dir)
         log_path = log_dir / LOG_FILE_NAME

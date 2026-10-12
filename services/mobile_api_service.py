@@ -318,7 +318,7 @@ def create_app(base_dir: Optional[Path] = None) -> FastAPI:
     uploads_dir = ensure_directory(root / "uploads")
     exports_dir = ensure_directory(root / "exports")
     manager = MobileJobManager(uploads_dir=uploads_dir, exports_dir=exports_dir)
-    app = FastAPI(title="AutoCutAI Mobile API", version="vNext")
+    app = FastAPI(title="Saeron Mobile API", version="vNext")
 
     @app.get("/api/vnext/health")
     def health() -> Dict[str, str]:

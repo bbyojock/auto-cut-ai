@@ -43,7 +43,7 @@ class ResolveExportDialog(ctk.CTkToplevel):
         self.grid_rowconfigure(2, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        header = ctk.CTkLabel(self, text="AutoCutAI Edit Preview", font=ctk.CTkFont(size=18, weight="bold"))
+        header = ctk.CTkLabel(self, text="Saeron Edit Preview", font=ctk.CTkFont(size=18, weight="bold"))
         header.grid(row=0, column=0, padx=20, pady=(20, 4), sticky="w")
 
         subheader_text = "Nothing has been applied to Resolve yet -- this is a preview only."
