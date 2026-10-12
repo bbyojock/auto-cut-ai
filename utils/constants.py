@@ -7,8 +7,9 @@ edit instead of a search-and-replace.
 
 from __future__ import annotations
 
-APP_NAME = "AutoCutAI"
+APP_NAME = "Saeron"
 APP_VERSION = "5.6.0"
+APP_ICON_FILENAME = "saeron.ico"
 
 # --- Filesystem layout -----------------------------------------------------
 CONFIG_DIR_NAME = "config"

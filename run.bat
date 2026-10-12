@@ -1,16 +1,16 @@
 @echo off
 REM ==========================================================
-REM  AutoCutAI launcher (Windows)
+REM  Saeron launcher (Windows)
 REM  - ASCII only on purpose: cmd.exe mis-parses non-ASCII text
 REM    in .bat files depending on the console code page.
 REM  - Must be saved with CRLF line endings (see .gitattributes).
 REM ==========================================================
 setlocal
 cd /d "%~dp0"
-title AutoCutAI
+title Saeron
 
 echo ============================================
-echo   AutoCutAI - starting...
+echo   Saeron - starting...
 echo ============================================
 echo.
 
@@ -75,7 +75,7 @@ echo.
 if errorlevel 1 goto pip_failed
 copy /y "requirements.txt" "%STAMP%" >nul
 echo.
-echo Setup finished. Starting AutoCutAI...
+echo Setup finished. Starting Saeron...
 echo.
 
 REM --- 4. Run the app --------------------------------------
@@ -102,7 +102,7 @@ exit /b 1
 
 :app_failed
 echo.
-echo [ERROR] AutoCutAI exited with an error. See the messages above.
+echo [ERROR] Saeron exited with an error. See the messages above.
 echo.
 pause
 exit /b 1

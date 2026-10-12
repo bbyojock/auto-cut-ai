@@ -24,7 +24,7 @@ class ConfigManager:
 
     def __init__(self, config_path: Optional[Path] = None, logger: Optional[logging.Logger] = None) -> None:
         self._config_path = config_path or (get_project_root() / "config" / CONFIG_FILE_NAME)
-        self._logger = logger or logging.getLogger("AutoCutAI.config")
+        self._logger = logger or logging.getLogger("Saeron.config")
         self._config: AppConfig = AppConfig()
 
     @property

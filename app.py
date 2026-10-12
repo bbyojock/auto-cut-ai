@@ -1,4 +1,4 @@
-"""AutoCutAI application entry point (composition root).
+"""Saeron application entry point (composition root).
 
 This module is intentionally the *only* place that constructs concrete
 service/manager instances and wires them together. Every other module
@@ -15,6 +15,8 @@ Run with:
 from __future__ import annotations
 
 import sys
+import os
+from pathlib import Path
 import tkinter.messagebox as messagebox
 
 import customtkinter as ctk
@@ -54,10 +56,11 @@ class AutoCutAIApp:
 
     def run(self) -> None:
         """Load configuration, assemble services, and start the GUI loop."""
+        self._configure_bundled_tools()
         try:
             context = self._build_context()
         except AutoCutAIError as exc:
-            self._logger.exception("Fatal error while starting AutoCutAI")
+            self._logger.exception("Fatal error while starting Saeron")
             self._show_fatal_error(str(exc))
             sys.exit(1)
 
@@ -69,6 +72,14 @@ class AutoCutAIApp:
 
         window = MainWindow(context)
         window.mainloop()
+
+    @staticmethod
+    def _configure_bundled_tools() -> None:
+        """Expose bundled FFmpeg to subprocess-based media services."""
+        base_dir = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
+        ffmpeg_bin = base_dir / "ffmpeg" / "bin"
+        if ffmpeg_bin.is_dir():
+            os.environ["PATH"] = f"{ffmpeg_bin}{os.pathsep}{os.environ.get('PATH', '')}"
 
     def _build_context(self) -> AppContext:
         """Construct every collaborator and bundle them into an AppContext."""
@@ -121,7 +132,7 @@ class AutoCutAIApp:
         key_manager = getattr(provider, "key_manager", None) or APIKeyManager(provider_settings.api_keys)
 
         self._logger.info(
-            "AutoCutAI started (provider=%s [%s], model=%s, keys=%d)",
+            "Saeron started (provider=%s [%s], model=%s, keys=%d)",
             provider.name,
             provider_settings.provider_id,
             provider_settings.model,
@@ -252,10 +263,10 @@ class AutoCutAIApp:
         try:
             root = ctk.CTk()
             root.withdraw()
-            messagebox.showerror("AutoCutAI - Startup Error", message)
+            messagebox.showerror("Saeron - Startup Error", message)
             root.destroy()
         except Exception:  # noqa: BLE001 - fall back to stderr if Tk itself fails
-            print(f"AutoCutAI failed to start: {message}", file=sys.stderr)
+            print(f"Saeron failed to start: {message}", file=sys.stderr)
 
 
 def main() -> None:
