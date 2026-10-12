@@ -115,16 +115,10 @@ GitHub Release, 클라우드 저장소 등 원하는 호스팅 서비스의 링�
 
 | 운영체제 | 다운로드 |
 |---|---|
-| Windows 64-bit | [Saeron Portable for Windows]([WINDOWS_PORTABLE_DOWNLOAD_URL](https://drive.google.com/file/d/1DgatqG-3K3_iWaAyPhyRjykkB_EX7Uej/view?usp=sharing) |
-| macOS Apple Silicon | [Saeron Portable for macOS Apple Silicon(Coming Soon)](MACOS_ARM64_DOWNLOAD_URL) |
-| macOS Intel | [Saeron Portable for macOS Intel(Coming Soon)](MACOS_X64_DOWNLOAD_URL) |
-| Linux 64-bit | [Saeron Portable for Linux(Coming Soon)](LINUX_X64_DOWNLOAD_URL) |
-
-예를 들어 Windows 링크를 연결하려면 다음처럼 작성합니다.
-
-```markdown
-[Saeron Portable for Windows](https://example.com/Saeron_Portable_Windows.zip)
-```
+| Windows 64-bit | [Saeron Portable for Windows](https://drive.google.com/file/d/1DgatqG-3K3_iWaAyPhyRjykkB_EX7Uej/view?usp=sharing) |
+| macOS Apple Silicon | Coming soon |
+| macOS Intel | Coming soon |
+| Linux 64-bit | Coming soon |
 
 포터블 버전은 운영체제별로 따로 빌드해야 하며, 다른 운영체제용 실행 파일을
 그대로 사용할 수는 없습니다. Windows 포터블 빌드에는 오디오 추출에 필요한
