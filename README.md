@@ -123,7 +123,7 @@ GitHub Release, 클라우드 저장소 등 원하는 호스팅 서비스의 링�
 | Windows 64-bit | [Saeron Portable for Windows](https://drive.google.com/file/d/1DgatqG-3K3_iWaAyPhyRjykkB_EX7Uej/view?usp=sharing) |
 | macOS Apple Silicon | Coming soon — use the `Build Saeron portable macOS app` workflow |
 | macOS Intel | Coming soon — use the `Build Saeron portable macOS app` workflow |
-| Linux 64-bit | Coming soon |
+| Linux 64-bit | Coming soon — use the `Build Saeron portable Linux app` workflow |
 
 포터블 버전은 운영체제별로 따로 빌드해야 하며, 다른 운영체제용 실행 파일을
 그대로 사용할 수는 없습니다. Windows 포터블 빌드에는 오디오 추출에 필요한
@@ -144,6 +144,13 @@ macOS에서는 다음 명령으로 현재 Mac의 아키텍처에 맞는 포터�
 
 ```bash
 bash packaging/build_portable_macos.sh
+```
+
+Linux 64-bit에서는 다음 명령으로 포터블 아카이브를 만들 수 있습니다.
+GitHub Actions에서는 `Saeron_Portable_Linux_x64` 아티팩트로 업로드합니다.
+
+```bash
+bash packaging/build_portable_linux.sh
 ```
 
 ### 모바일 연동 API
