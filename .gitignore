@@ -34,3 +34,4 @@ Thumbs.db
 !/portable/Saeron_Portable_Windows/README.txt
 /portable/Saeron_Portable_macOS_*
 /assets/saeron.icns
+/portable/Saeron_Portable_Linux_*
