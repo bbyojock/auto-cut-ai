@@ -1,0 +1,27 @@
+name: Build Saeron portable macOS Apple Silicon
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Build portable app
+        shell: bash
+        run: bash packaging/build_portable_macos.sh
+      - name: Upload portable app
+        uses: actions/upload-artifact@v5
+        with:
+          name: Saeron_Portable_macOS_AppleSilicon
+          path: portable/Saeron_Portable_macOS_AppleSilicon.zip
