@@ -52,7 +52,10 @@ DaVinci Resolve에서 확인하고 다듬을 수 있도록 만들어졌습니다
 
 일반 자동 편집 모드와 분리된 영화·드라마 작업 공간을 제공합니다. 영화·드라마
 모드에서는 프로젝트 이름, 대본 파일, 콘티 이미지 폴더, 촬영본 폴더를 등록하고
-대본의 씬 구조와 촬영본·콘티 파일을 씬 단위로 정리할 수 있습니다.
+대본의 씬 구조와 촬영본·콘티 파일을 씬 단위로 정리할 수 있습니다. 모든 입력은
+선택 사항이며, 필요한 자료만 먼저 등록한 뒤 나중에 추가할 수 있습니다. 대본이나
+콘티 템플릿을 하나로 고정하지 않고, 일반 텍스트 형식의 촬영계획표도 추가할 수
+있습니다.
 
 현재 지원하는 준비·분석 기능은 다음과 같습니다.
 
@@ -61,6 +64,8 @@ DaVinci Resolve에서 확인하고 다듬을 수 있도록 만들어졌습니다
 -   콘티 이미지 파일명에서 씬 번호와 패널 번호 추출
 -   대본 씬과 촬영본·콘티 패널의 매칭 결과 표시
 -   촬영본이 아직 연결되지 않은 대본 씬 확인
+-   TXT/CSV 형태의 촬영계획표 등록
+-   대본·콘티·촬영계획표 중 일부만 등록한 부분 분석
 
 파일명에 씬과 테이크 또는 패널 정보를 넣으면 더 정확하게 연결할 수 있습니다.
 
@@ -116,18 +121,29 @@ GitHub Release, 클라우드 저장소 등 원하는 호스팅 서비스의 링�
 | 운영체제 | 다운로드 |
 |---|---|
 | Windows 64-bit | [Saeron Portable for Windows](https://drive.google.com/file/d/1DgatqG-3K3_iWaAyPhyRjykkB_EX7Uej/view?usp=sharing) |
-| macOS Apple Silicon | Coming soon |
-| macOS Intel | Coming soon |
+| macOS Apple Silicon | Coming soon — use the `Build Saeron portable macOS app` workflow |
+| macOS Intel | Coming soon — use the `Build Saeron portable macOS app` workflow |
 | Linux 64-bit | Coming soon |
 
 포터블 버전은 운영체제별로 따로 빌드해야 하며, 다른 운영체제용 실행 파일을
 그대로 사용할 수는 없습니다. Windows 포터블 빌드에는 오디오 추출에 필요한
 FFmpeg가 포함됩니다.
 
+포터블 앱의 설정과 API 키는 `Saeron.exe`와 같은 폴더의 `config` 폴더에
+저장되므로, 프로그램을 다시 실행해도 유지됩니다. 설치 권한이 필요한 폴더에
+복사한 경우에는 Windows 사용자 앱 데이터 폴더로 자동 전환됩니다.
+
 개발자가 직접 Windows 포터블 빌드를 만들려면 다음 명령을 사용합니다.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File packaging\build_portable_windows.ps1
+```
+
+macOS에서는 다음 명령으로 현재 Mac의 아키텍처에 맞는 포터블 앱을 만들 수
+있습니다. GitHub Actions에서는 Apple Silicon과 Intel 빌드를 각각 생성합니다.
+
+```bash
+bash packaging/build_portable_macos.sh
 ```
 
 ### 모바일 연동 API

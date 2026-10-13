@@ -1,0 +1,32 @@
+name: Build Saeron portable macOS app
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14
+            label: AppleSilicon
+          - runner: macos-13
+            label: Intel
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Build portable app
+        shell: bash
+        run: bash packaging/build_portable_macos.sh
+      - name: Upload portable app
+        uses: actions/upload-artifact@v5
+        with:
+          name: Saeron_Portable_macOS_${{ matrix.label }}
+          path: portable/Saeron_Portable_macOS_${{ matrix.label }}.zip

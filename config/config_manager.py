@@ -10,7 +10,7 @@ from typing import Optional
 from config.settings import AppConfig
 from core.exceptions import ConfigurationError
 from utils.constants import CONFIG_FILE_NAME
-from utils.file_utils import ensure_directory, get_project_root
+from utils.file_utils import ensure_directory, get_data_root
 
 
 class ConfigManager:
@@ -23,7 +23,7 @@ class ConfigManager:
     """
 
     def __init__(self, config_path: Optional[Path] = None, logger: Optional[logging.Logger] = None) -> None:
-        self._config_path = config_path or (get_project_root() / "config" / CONFIG_FILE_NAME)
+        self._config_path = config_path or (get_data_root() / "config" / CONFIG_FILE_NAME)
         self._logger = logger or logging.getLogger("Saeron.config")
         self._config: AppConfig = AppConfig()
 

@@ -39,9 +39,11 @@ class FilmDramaProject:
     """The analyzed inputs for a screenplay-driven editing project."""
 
     name: str
-    script_path: Path
-    storyboard_path: Path
-    footage_path: Path
+    script_path: Optional[Path] = None
+    storyboard_path: Optional[Path] = None
+    footage_path: Optional[Path] = None
+    shooting_plan_path: Optional[Path] = None
+    shooting_plan_text: str = ""
     scenes: List[ScriptScene] = field(default_factory=list)
     storyboard_panels: List[StoryboardPanel] = field(default_factory=list)
     footage_takes: List[FootageTake] = field(default_factory=list)

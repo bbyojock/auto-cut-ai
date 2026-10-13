@@ -21,10 +21,15 @@ _IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".webp", ".bmp")
 
 
 class FilmDramaService:
-    """Parses common screenplay text and scene/take filename conventions."""
+    """Parses optional screenplay/planning inputs and scene/take filenames."""
+
+    @staticmethod
+    def read_text_file(path: Path) -> str:
+        """Read a user-provided screenplay or shooting-plan text file."""
+        return path.read_text(encoding="utf-8-sig")
 
     def parse_script(self, path: Path) -> List[ScriptScene]:
-        text = path.read_text(encoding="utf-8-sig")
+        text = self.read_text_file(path)
         scenes: List[ScriptScene] = []
         current: ScriptScene | None = None
         generated_number = 1
