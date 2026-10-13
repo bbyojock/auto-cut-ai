@@ -98,7 +98,7 @@ echo   [OK] Python packages installed.
 if "!HAS_GPU!"=="1" (
     echo.
     echo Installing GPU-enabled CTranslate2/faster-whisper dependencies...
-    %PY% -m pip install --upgrade ctranslate2 faster-whisper
+    %PY% -m pip install --upgrade ctranslate2 faster-whisper "av<19"
     if errorlevel 1 (
         echo   [WARN] Could not reinstall ctranslate2/faster-whisper for GPU.
         echo          Saeron will still work fine on CPU.
