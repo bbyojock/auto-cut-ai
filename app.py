@@ -76,10 +76,17 @@ class AutoCutAIApp:
     @staticmethod
     def _configure_bundled_tools() -> None:
         """Expose bundled FFmpeg to subprocess-based media services."""
-        base_dir = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
-        ffmpeg_bin = base_dir / "ffmpeg" / "bin"
-        if ffmpeg_bin.is_dir():
-            os.environ["PATH"] = f"{ffmpeg_bin}{os.pathsep}{os.environ.get('PATH', '')}"
+        executable_path = Path(sys.executable).resolve()
+        base_dir = executable_path.parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
+        candidates = [base_dir / "ffmpeg" / "bin"]
+        if getattr(sys, "frozen", False) and sys.platform == "darwin":
+            # A .app executable lives under Saeron.app/Contents/MacOS,
+            # while the portable bundle keeps shared tools beside the .app.
+            candidates.append(base_dir.parents[2] / "ffmpeg" / "bin")
+        for ffmpeg_bin in candidates:
+            if ffmpeg_bin.is_dir():
+                os.environ["PATH"] = f"{ffmpeg_bin}{os.pathsep}{os.environ.get('PATH', '')}"
+                break
 
     def _build_context(self) -> AppContext:
         """Construct every collaborator and bundle them into an AppContext."""

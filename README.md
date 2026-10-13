@@ -116,8 +116,8 @@ GitHub Release, 클라우드 저장소 등 원하는 호스팅 서비스의 링�
 | 운영체제 | 다운로드 |
 |---|---|
 | Windows 64-bit | [Saeron Portable for Windows](https://drive.google.com/file/d/1DgatqG-3K3_iWaAyPhyRjykkB_EX7Uej/view?usp=sharing) |
-| macOS Apple Silicon | Coming soon |
-| macOS Intel | Coming soon |
+| macOS Apple Silicon | Coming soon — use the `Build Saeron portable macOS app` workflow |
+| macOS Intel | Coming soon — use the `Build Saeron portable macOS app` workflow |
 | Linux 64-bit | Coming soon |
 
 포터블 버전은 운영체제별로 따로 빌드해야 하며, 다른 운영체제용 실행 파일을
@@ -132,6 +132,13 @@ FFmpeg가 포함됩니다.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File packaging\build_portable_windows.ps1
+```
+
+macOS에서는 다음 명령으로 현재 Mac의 아키텍처에 맞는 포터블 앱을 만들 수
+있습니다. GitHub Actions에서는 Apple Silicon과 Intel 빌드를 각각 생성합니다.
+
+```bash
+bash packaging/build_portable_macos.sh
 ```
 
 ### 모바일 연동 API
