@@ -312,14 +312,19 @@ class GeminiProvider(AIProvider):
                 return APIKeyStatus.INVALID, f"HTTP 403: {message}"
             if code == 404:
                 return APIKeyStatus.REQUEST_ERROR, f"HTTP 404: {message}"
+            if (
+                "quota" in lower
+                or "resource_exhausted" in lower
+                or "usage limit" in lower
+                or "project has exceeded" in lower
+            ):
+                return APIKeyStatus.QUOTA_EXCEEDED, f"Gemini project usage limit exceeded: {message}"
             if code == 429:
                 return APIKeyStatus.RATE_LIMITED, f"HTTP 429: {message}"
             if code in (500, 503):
                 return APIKeyStatus.SERVER_ERROR, f"HTTP {code}: {message}"
             if code == 408 or "timeout" in lower or "deadline" in lower:
                 return APIKeyStatus.TIMEOUT, f"HTTP {code}: {message}" if code else message
-            if "quota" in lower or "resource_exhausted" in lower:
-                return APIKeyStatus.QUOTA_EXCEEDED, message
             return APIKeyStatus.REQUEST_ERROR, f"HTTP {code}: {message}" if code else message
         if isinstance(exc, (TimeoutException, ReadTimeout, TimeoutError)):
             return APIKeyStatus.TIMEOUT, f"Network timeout: {message}"
