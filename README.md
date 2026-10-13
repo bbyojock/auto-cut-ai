@@ -1,5 +1,7 @@
 # Saeron
 
+- [English README](README.en.md)
+
 긴 영상 촬영본을 넣으면, AI가 재미없는 부분은 잘라내고 필요한 부분만
 남겨서 "편집안"을 만들어주는 프로그램입니다.
 
@@ -114,16 +116,15 @@ Saeron은 운영체제별 포터블 배포본을 제공합니다. 포터블 앱�
 Python 런타임과 미디어 처리 구성 요소가 포함되어 있으므로 사용자가 Python을
 별도로 설치하지 않아도 됩니다.
 
-아래 링크 주소를 각 배포 파일의 실제 다운로드 주소로 교체해서 사용하세요.
-GitHub Release, 클라우드 저장소 등 원하는 호스팅 서비스의 링크를 넣을 수
-있습니다.
+아래 링크에서 운영체제에 맞는 포터블 앱을 다운로드하세요. 포터블 앱에는
+실행에 필요한 Python 런타임과 미디어 처리 구성 요소가 포함되어 있습니다.
 
 | 운영체제 | 다운로드 |
 |---|---|
-| Windows 64-bit | [Saeron Portable for Windows](https://drive.google.com/file/d/1DgatqG-3K3_iWaAyPhyRjykkB_EX7Uej/view?usp=sharing) |
-| macOS Apple Silicon | Coming soon — use the `Build Saeron portable macOS Apple Silicon` workflow |
-| macOS Intel | Coming soon — use the `Build Saeron portable macOS Intel` workflow |
-| Linux 64-bit | Coming soon — use the `Build Saeron portable Linux app` workflow |
+| Windows 64-bit | [Saeron Portable for Windows](https://drive.google.com/file/d/1LJlDPDCXcgiAYh9gpQz-o2hFr9hFPuiX/view?usp=sharing) |
+| macOS Apple Silicon | [Saeron Portable for macOS Apple Silicon](https://drive.google.com/file/d/1ejg-U0ePmyjAlVIUQOX5-g_J_y55vyrf/view?usp=sharing) |
+| macOS Intel | [Saeron Portable for macOS Intel](https://drive.google.com/file/d/1RA-AgvCiKAew6RBezT5v4BA3XMUCCjPK/view?usp=sharing) |
+| Linux 64-bit | Coming soon |
 
 포터블 버전은 운영체제별로 따로 빌드해야 하며, 다른 운영체제용 실행 파일을
 그대로 사용할 수는 없습니다. Windows 포터블 빌드에는 오디오 추출에 필요한
@@ -131,7 +132,34 @@ FFmpeg가 포함됩니다.
 
 포터블 앱의 설정과 API 키는 `Saeron.exe`와 같은 폴더의 `config` 폴더에
 저장되므로, 프로그램을 다시 실행해도 유지됩니다. 설치 권한이 필요한 폴더에
-복사한 경우에는 Windows 사용자 앱 데이터 폴더로 자동 전환됩니다.
+복사한 경우에는 Windows 사용자 앱 데이터 폴더로 자동 전환됩니다. macOS와
+Linux에서도 앱이 쓰기 가능한 위치에 있으면 같은 방식으로 설정이 유지됩니다.
+
+#### Windows 사용법
+
+1. 위 링크에서 ZIP 파일을 다운로드합니다.
+2. ZIP 파일을 원하는 폴더에 압축 해제합니다.
+3. `Saeron.exe` 또는 `Start Saeron.bat`를 실행합니다.
+4. 처음 실행한 뒤 Settings에서 AI 공급자와 API 키를 입력합니다.
+
+#### macOS Apple Silicon / Intel 사용법
+
+1. Mac 종류에 맞는 ZIP 파일을 다운로드합니다.
+2. ZIP 파일을 압축 해제하고 `Saeron.app`을 `Applications` 또는 원하는 폴더로
+   이동합니다.
+3. 처음 실행할 때 macOS가 차단하면 `Saeron.app`을 Control-click 또는
+   마우스 오른쪽 버튼으로 클릭하고 **열기(Open)** 를 선택합니다.
+4. Settings에서 AI 공급자와 API 키를 입력합니다.
+
+#### Linux 64-bit 사용법
+
+Linux 포터블 다운로드는 준비 중입니다. 파일이 제공되면 압축 해제 후 다음
+명령으로 실행 권한을 부여하고 실행합니다.
+
+```bash
+chmod +x Saeron
+./Saeron
+```
 
 개발자가 직접 Windows 포터블 빌드를 만들려면 다음 명령을 사용합니다.
 
