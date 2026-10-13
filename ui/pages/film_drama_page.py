@@ -46,17 +46,22 @@ class FilmDramaPage(BasePage):
         self._script_path = ctk.StringVar()
         self._storyboard_path = ctk.StringVar()
         self._footage_path = ctk.StringVar()
+        self._shooting_plan_path = ctk.StringVar()
 
         self._add_path_row(setup, 0, "프로젝트 이름", self._project_name, "예: 단편영화 1차 편집")
         self._add_path_row(setup, 1, "대본 파일", self._script_path, "TXT 대본 파일", self._choose_script)
         self._add_path_row(setup, 2, "콘티 폴더", self._storyboard_path, "콘티 이미지 폴더", self._choose_storyboard)
         self._add_path_row(setup, 3, "촬영본 폴더", self._footage_path, "씬별 촬영본 폴더", self._choose_footage)
+        self._add_path_row(
+            setup, 4, "촬영계획표", self._shooting_plan_path,
+            "TXT / CSV 촬영계획표 (선택)", self._choose_shooting_plan,
+        )
 
         ctk.CTkButton(
             setup,
             text="대본·콘티·촬영본 분석",
             command=self._prepare_project,
-        ).grid(row=4, column=0, columnspan=2, padx=12, pady=(16, 12), sticky="e")
+        ).grid(row=5, column=0, columnspan=3, padx=12, pady=(16, 12), sticky="e")
 
         info = ctk.CTkFrame(self)
         info.grid(row=3, column=0, padx=30, pady=(14, 10), sticky="ew")
@@ -128,41 +133,53 @@ class FilmDramaPage(BasePage):
         if path:
             self._footage_path.set(path)
 
+    def _choose_shooting_plan(self) -> None:
+        path = filedialog.askopenfilename(
+            title="촬영계획표 선택",
+            filetypes=[
+                ("Text and CSV files", "*.txt *.csv"),
+                ("All files", "*.*"),
+            ],
+        )
+        if path:
+            self._shooting_plan_path.set(path)
+
     def _prepare_project(self) -> None:
         name = self._project_name.get().strip() or "이름 없는 영화·드라마 프로젝트"
-        missing = [
-            label
-            for label, variable in (
-                ("대본 파일", self._script_path),
-                ("콘티 폴더", self._storyboard_path),
-                ("촬영본 폴더", self._footage_path),
+        script_path = self._optional_path(self._script_path, file=True)
+        storyboard_path = self._optional_path(self._storyboard_path, directory=True)
+        footage_path = self._optional_path(self._footage_path, directory=True)
+        shooting_plan_path = self._optional_path(self._shooting_plan_path, file=True)
+        invalid = [
+            label for label, variable, path in (
+                ("대본 파일", self._script_path, script_path),
+                ("콘티 폴더", self._storyboard_path, storyboard_path),
+                ("촬영본 폴더", self._footage_path, footage_path),
+                ("촬영계획표", self._shooting_plan_path, shooting_plan_path),
             )
-            if not variable.get().strip()
+            if variable.get().strip() and path is None
         ]
-        if missing:
+        if invalid:
             self._status_label.configure(
-                text=f"{name}\n\n다음 입력을 등록해주세요: {', '.join(missing)}",
-                text_color="#e0a458",
-            )
-            return
-        script_path = Path(self._script_path.get().strip())
-        storyboard_path = Path(self._storyboard_path.get().strip())
-        footage_path = Path(self._footage_path.get().strip())
-        if not script_path.is_file() or not storyboard_path.is_dir() or not footage_path.is_dir():
-            self._status_label.configure(
-                text="대본 파일과 콘티·촬영본 폴더의 실제 경로를 확인해주세요.",
+                text=f"{name}\n\n경로를 확인해주세요: {', '.join(invalid)}",
                 text_color="#e0a458",
             )
             return
         try:
-            scenes = self._service.parse_script(script_path)
-            panels = self._service.scan_storyboard(storyboard_path)
-            takes = self._service.scan_footage(footage_path)
+            scenes = self._service.parse_script(script_path) if script_path else []
+            panels = self._service.scan_storyboard(storyboard_path) if storyboard_path else []
+            takes = self._service.scan_footage(footage_path) if footage_path else []
+            shooting_plan_text = (
+                self._service.read_text_file(shooting_plan_path)
+                if shooting_plan_path else ""
+            )
             self._project = FilmDramaProject(
                 name=name,
                 script_path=script_path,
                 storyboard_path=storyboard_path,
                 footage_path=footage_path,
+                shooting_plan_path=shooting_plan_path,
+                shooting_plan_text=shooting_plan_text,
                 scenes=scenes,
                 storyboard_panels=panels,
                 footage_takes=takes,
@@ -171,7 +188,7 @@ class FilmDramaPage(BasePage):
             messagebox.showerror("Film / Drama", f"입력 분석에 실패했습니다.\n\n{exc}")
             return
         self._status_label.configure(
-            text=f"{name}\n\n대본·콘티·촬영본 분석이 완료되었습니다.",
+            text=f"{name}\n\n입력된 자료의 분석이 완료되었습니다. 비어 있는 자료는 나중에 추가할 수 있습니다.",
             text_color=("gray10", "gray90"),
         )
         self._render_results()
@@ -184,6 +201,10 @@ class FilmDramaPage(BasePage):
             f"씬 {len(project.scenes)}개 · 콘티 패널 {len(project.storyboard_panels)}개 · 촬영본 {len(project.footage_takes)}개",
             f"씬 번호 매칭: {len(project.matched_scene_numbers)}개",
         ]
+        if project.shooting_plan_text:
+            lines.append(f"촬영계획표: {len(project.shooting_plan_text.splitlines())}줄")
+        if not any((project.script_path, project.storyboard_path, project.footage_path, project.shooting_plan_path)):
+            lines.append("등록된 입력 없이 프로젝트를 만들었습니다. 자료는 나중에 추가할 수 있습니다.")
         if project.unmatched_scene_numbers:
             lines.append(f"촬영본 미매칭 씬: {', '.join(project.unmatched_scene_numbers)}")
         lines.append("")
@@ -203,3 +224,15 @@ class FilmDramaPage(BasePage):
         self._results.delete("1.0", "end")
         self._results.insert("1.0", "\n".join(lines))
         self._results.configure(state="disabled")
+
+    @staticmethod
+    def _optional_path(variable: ctk.StringVar, *, file: bool = False, directory: bool = False) -> Path | None:
+        raw = variable.get().strip()
+        if not raw:
+            return None
+        path = Path(raw)
+        if file and path.is_file():
+            return path
+        if directory and path.is_dir():
+            return path
+        return None
