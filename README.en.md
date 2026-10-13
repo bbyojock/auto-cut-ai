@@ -23,9 +23,9 @@ start Saeron without installing Python separately.
 
 | Platform | Download |
 |---|---|
-| Windows 64-bit | [Saeron Portable for Windows](https://drive.google.com/file/d/1LJlDPDCXcgiAYh9gpQz-o2hFr9hFPuiX/view?usp=sharing) |
-| macOS Apple Silicon | [Saeron Portable for macOS Apple Silicon](https://drive.google.com/file/d/1ejg-U0ePmyjAlVIUQOX5-g_J_y55vyrf/view?usp=sharing) |
-| macOS Intel | [Saeron Portable for macOS Intel](https://drive.google.com/file/d/1RA-AgvCiKAew6RBezT5v4BA3XMUCCjPK/view?usp=sharing) |
+| Windows 64-bit | [Saeron Portable for Windows](https://drive.google.com/file/d/1ZOnPMu17YDsXNUyELPOZSUZ69iAY12Fq/view?usp=sharing) |
+| macOS Apple Silicon | [Saeron Portable for macOS Apple Silicon](https://drive.google.com/file/d/1O-URPNqsDxN6ejm4c-SnnA5yp0yPGYt6/view?usp=sharing) |
+| macOS Intel | [Saeron Portable for macOS Intel](https://drive.google.com/file/d/1DVp486IPcMMETWoWybMPxR6Bfa9cwUGm/view?usp=sharing) |
 | Linux 64-bit | Coming soon |
 
 ### Windows
