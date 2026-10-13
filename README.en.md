@@ -16,6 +16,39 @@ that can be reviewed or exported to DaVinci Resolve.
 - DaVinci Resolve XML export
 - Multiple AI provider configuration
 
+### Cut decisions and speed changes
+
+Saeron assigns one of three decisions to each analyzed range:
+
+- **KEEP**: keep the range at its original speed
+- **REMOVE**: exclude the range from the final edit plan
+- **COMPRESS**: keep the range but play it faster to shorten it
+
+COMPRESS speed is applied per segment and currently supports **1.25x to 6.0x**,
+with a default of 2.0x. The speed change is included in the estimated final
+duration and Resolve XML export. Repetitive movement, preparation, gameplay, or
+long explanations can be shortened without removing them entirely.
+
+### Review and edit plans
+
+Edit plans can include overall and per-segment confidence, reasons, influencing
+factors, warnings, and segment scores. Results can also show the original
+duration, estimated final duration, removed percentage, cut count, and average,
+longest, and shortest clip lengths.
+
+After generation, you can:
+
+- send edit instructions through the EditPlan chat
+- use **Undo / Redo** for plan revisions
+- export the plan as JSON, TXT, or Markdown
+
+### Editing styles and personalization
+
+Available style presets include General, Gaming, Vlog, Tutorial, Podcast,
+Reaction, Short-form, Documentary, and Minimal Cuts. Editing instructions and
+confirmation/correction feedback can be saved in a personal editing profile and
+used in future plans. The profile can be reviewed or reset from Settings.
+
 ## Portable downloads
 
 Portable builds include the runtime and media-processing components needed to
