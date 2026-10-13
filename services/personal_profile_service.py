@@ -18,7 +18,7 @@ from typing import Optional
 
 from models.personal_profile import PersonalEditingProfile, PersonalPreference, PreferenceStrength
 from services.logging_service import LoggingService
-from utils.file_utils import ensure_directory, get_project_root
+from utils.file_utils import ensure_directory, get_data_root
 
 _PROFILE_FILE_NAME = "personal_profile.json"
 
@@ -27,7 +27,7 @@ class PersonalProfileService:
     """Owns the lifecycle of one :class:`PersonalEditingProfile`."""
 
     def __init__(self, profile_path: Optional[Path] = None, logger: Optional[logging.Logger] = None) -> None:
-        self._profile_path = profile_path or (get_project_root() / "config" / _PROFILE_FILE_NAME)
+        self._profile_path = profile_path or (get_data_root() / "config" / _PROFILE_FILE_NAME)
         self._logger = logger or LoggingService.get_logger("services.personal_profile")
         self._profile: PersonalEditingProfile = PersonalEditingProfile()
         self.load()

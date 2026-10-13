@@ -19,7 +19,7 @@ from typing import Optional
 from models.editing_instructions import INSTRUCTION_SCOPE_PERSISTENT, EditingInstructionSet
 from services.logging_service import LoggingService
 from services.personal_profile_service import PersonalProfileService
-from utils.file_utils import ensure_directory, get_project_root
+from utils.file_utils import ensure_directory, get_data_root
 
 _PERSISTENT_FILE_NAME = "persistent_instructions.json"
 
@@ -33,7 +33,7 @@ class EditingInstructionsService:
         storage_path: Optional[Path] = None,
         logger: Optional[logging.Logger] = None,
     ) -> None:
-        self._storage_path = storage_path or (get_project_root() / "config" / _PERSISTENT_FILE_NAME)
+        self._storage_path = storage_path or (get_data_root() / "config" / _PERSISTENT_FILE_NAME)
         self._logger = logger or LoggingService.get_logger("services.editing_instructions")
         self._personal_profile_service = personal_profile_service
 
