@@ -1,4 +1,4 @@
-name: Build Saeron portable macOS app
+name: Build Saeron portable macOS Intel
 
 on:
   workflow_dispatch:
@@ -8,15 +8,9 @@ on:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - runner: macos-14
-            label: AppleSilicon
-          - runner: macos-13
-            label: Intel
-    runs-on: ${{ matrix.runner }}
+    # macos-13 was retired from the hosted runner pool. macos-15-intel
+    # keeps this build on an x86_64 runner instead of cross-compiling it.
+    runs-on: macos-15-intel
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -28,5 +22,5 @@ jobs:
       - name: Upload portable app
         uses: actions/upload-artifact@v5
         with:
-          name: Saeron_Portable_macOS_${{ matrix.label }}
-          path: portable/Saeron_Portable_macOS_${{ matrix.label }}.zip
+          name: Saeron_Portable_macOS_Intel
+          path: portable/Saeron_Portable_macOS_Intel.zip

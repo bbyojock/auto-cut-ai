@@ -121,8 +121,8 @@ GitHub Release, 클라우드 저장소 등 원하는 호스팅 서비스의 링�
 | 운영체제 | 다운로드 |
 |---|---|
 | Windows 64-bit | [Saeron Portable for Windows](https://drive.google.com/file/d/1DgatqG-3K3_iWaAyPhyRjykkB_EX7Uej/view?usp=sharing) |
-| macOS Apple Silicon | Coming soon — use the `Build Saeron portable macOS app` workflow |
-| macOS Intel | Coming soon — use the `Build Saeron portable macOS app` workflow |
+| macOS Apple Silicon | Coming soon — use the `Build Saeron portable macOS Apple Silicon` workflow |
+| macOS Intel | Coming soon — use the `Build Saeron portable macOS Intel` workflow |
 | Linux 64-bit | Coming soon — use the `Build Saeron portable Linux app` workflow |
 
 포터블 버전은 운영체제별로 따로 빌드해야 하며, 다른 운영체제용 실행 파일을
